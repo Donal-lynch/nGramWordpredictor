@@ -12,8 +12,7 @@ if (!exists('biGrams')){
 nGramPredictor <- function (pattern) {
     
     # Remove any puntucation
-    # pattern <- gsub ('\'|#|?|!|;|&|;|;|\"', '',pattern )
-    pattern <- gsub ('[[:punct:]]|[[:alpha:]]', '', pattern)
+    pattern <- gsub ('[[:punct:]]|[0-9]', '', pattern)
     
     # Remove leading or trailing space
     pattern <- gsub ('^ ', '',pattern )

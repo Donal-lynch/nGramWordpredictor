@@ -52,16 +52,25 @@ test.set.split <- sapply(test.set, stringSplitter)%>%
 # bit of tidying
 rownames(test.set.split) <- 1:nrow(test.set.split)
 
+
 predict.set <- sapply(test.set.split$V1, nGramPredictor)
 
 # convert to a df
-predict.set <- data.frame(matrix(temp, ncol=3, byrow=T),
+predict.set <- data.frame(matrix(predict.set, ncol=3, byrow=T),
                            stringsAsFactors=FALSE)
+
+
+test.set.split$V2 <- gsub ('[[:punct:]]|[0-9]', '', test.set.split$V2)
+test.set.split$V2 <- tolower(test.set.split$V2)
 
 # function to test if the prediction matches the correct value
 f <- function (index) {
     test.set.split$V2[index] %in% predict.set[index,]
 }
 
+complete.set <- cbind (test.set.split$V2, predict.set)
+
 accuracy <- sapply(1:nrow(predict.set), f)%>%
-    mean
+    mean *100
+
+print(paste('The accuracy, based on', nrow(complete.set), 'rows is', accuracy, '%'))
